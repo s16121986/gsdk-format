@@ -1,6 +1,6 @@
 <?php
 
-namespace Format\Rules\Concerns;
+namespace Gsdk\Format\Rules\Concerns;
 
 trait HasFormat {
 
