@@ -1,6 +1,6 @@
 <?php
 
-namespace Format\Rules;
+namespace Gsdk\Format\Rules;
 
 interface RuleInterface {
 

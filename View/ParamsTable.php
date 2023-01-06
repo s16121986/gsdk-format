@@ -1,6 +1,6 @@
 <?php
 
-namespace Format\View;
+namespace Gsdk\Format\View;
 
 class ParamsTable {
 

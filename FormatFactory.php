@@ -1,6 +1,6 @@
 <?php
 
-namespace Format;
+namespace Gsdk\Format;
 
 class FormatFactory {
 

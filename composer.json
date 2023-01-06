@@ -1,8 +1,10 @@
 {
-  "name": "gsv/format",
+  "name": "gsdk/format",
   "type": "library",
   "description": "Allows format values",
+  "version": "1.0.0",
   "keywords": [
+	"gsdk",
 	"format"
   ],
   "license": "MIT",
@@ -21,7 +23,7 @@
   },
   "autoload": {
 	"psr-4": {
-	  "Gsv\\Format\\": ""
+	  "Gsdk\\Format\\": ""
 	}
   },
   "minimum-stability": "dev"
