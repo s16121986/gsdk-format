@@ -2,8 +2,8 @@
 
 namespace Gsdk\Format\View;
 
-class ParamsTable {
-
+class ParamsTable
+{
 	protected $view;
 
 	protected $tableClass = 'table-params';
@@ -14,22 +14,26 @@ class ParamsTable {
 
 	private $values = [];
 
-	public function __construct($data = null) {
+	public function __construct($data = null)
+	{
 		$this->data($data);
 	}
 
-	public function __get(string $name) {
+	public function __get(string $name)
+	{
 		return $this->values[$name] ?? $this->data->$name ?? null;
 	}
 
-	public function __call(string $name, array $arguments) {
+	public function __call(string $name, array $arguments)
+	{
 		if (count($arguments) < 2)
 			throw new \Exception('Arguments number required');
 
 		return $this->param($arguments[0], $arguments[1], $name, $arguments[2] ?? []);
 	}
 
-	public function param(string $name, string $label, $type = 'text', array $options = []): static {
+	public function param(string $name, string $label, $type = 'text', array $options = []): static
+	{
 		$options['name'] = $name;
 		$options['label'] = $label;
 		$options['type'] = $type;
@@ -37,17 +41,20 @@ class ParamsTable {
 		return $this;
 	}
 
-	public function custom(string $name, string $label, callable $formatFunction, array $options = []): static {
+	public function custom(string $name, string $label, callable $formatFunction, array $options = []): static
+	{
 		$options['format'] = $formatFunction;
 		return $this->param($name, $label, 'custom', $options);
 	}
 
-	public function enum(string $name, string $label, string $enum, array $options = []): static {
+	public function enum(string $name, string $label, string $enum, array $options = []): static
+	{
 		$options['enum'] = $enum;
 		return $this->param($name, $label, 'enum', $options);
 	}
 
-	public function data($data): static {
+	public function data($data): static
+	{
 		if (empty($data))
 			$this->data = new \stdClass();
 		else if (is_array($data))
@@ -60,29 +67,34 @@ class ParamsTable {
 		return $this;
 	}
 
-	public function value($name, $value): static {
+	public function value($name, $value): static
+	{
 		$this->values[$name] = $value;
 		return $this;
 	}
 
-	public function values(array $values): static {
+	public function values(array $values): static
+	{
 		$this->values = array_merge($this->values, $values);
 		return $this;
 	}
 
-	public function tableClass(string $tableClass): static {
+	public function tableClass(string $tableClass): static
+	{
 		$this->tableClass = $tableClass;
 
 		return $this;
 	}
 
-	public function view(string $view): static {
+	public function view(string $view): static
+	{
 		$this->view = $view;
 
 		return $this;
 	}
 
-	public function render(): string {
+	public function render(): string
+	{
 		if ($this->view)
 			return (string)view($this->view, [
 				'table' => $this
@@ -96,11 +108,13 @@ class ParamsTable {
 		return $html ? '<table class="' . $this->tableClass . '">' . $html . '</table>' : '';
 	}
 
-	protected function paramFactory($options): object {
+	protected function paramFactory($options): object
+	{
 		return (object)$options;
 	}
 
-	protected function getValueHref($value, $param) {
+	protected function getValueHref($value, $param)
+	{
 		if (isset($param->href))
 			return $param->href;
 
@@ -112,10 +126,11 @@ class ParamsTable {
 		};
 	}
 
-	protected function prepareValue($value, $param) {
+	protected function prepareValue($value, $param)
+	{
 		$format = $param->format ?? null;
 		if (!empty($format) && !is_string($param->format) && is_callable($param->format))
-			return call_user_func($param->format, $value);
+			return call_user_func($param->format, $value, $this->data);
 
 		$rule = $param->type;
 		switch ($rule) {
@@ -129,11 +144,13 @@ class ParamsTable {
 		return $value;
 	}
 
-	protected function prepareEmpty($param) {
+	protected function prepareEmpty($param)
+	{
 		return $param->emptyText ?? null;
 	}
 
-	protected function prepareText($value, $param): ?string {
+	protected function prepareText($value, $param): ?string
+	{
 		if (null === $value || '' === $value)
 			return $this->prepareEmpty($param);
 
@@ -157,7 +174,8 @@ class ParamsTable {
 		return $text;
 	}
 
-	protected function renderParam($param): string {
+	protected function renderParam($param): string
+	{
 		$text = $this->prepareText($this->{$param->name}, $param);
 		if (null === $text)
 			return '';
@@ -168,8 +186,8 @@ class ParamsTable {
 			. '</tr>';
 	}
 
-	public function __toString(): string {
+	public function __toString(): string
+	{
 		return $this->render();
 	}
-
 }

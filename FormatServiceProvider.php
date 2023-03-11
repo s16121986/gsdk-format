@@ -5,8 +5,8 @@ namespace Gsdk\Format;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class FormatServiceProvider extends ServiceProvider implements DeferrableProvider {
-
+class FormatServiceProvider extends ServiceProvider implements DeferrableProvider
+{
 	protected $formats = [];
 
 	protected $defaultRules = [
@@ -19,11 +19,13 @@ class FormatServiceProvider extends ServiceProvider implements DeferrableProvide
 
 	protected $rules = [];
 
-	public function register() {
+	public function register()
+	{
 		$this->registerFormatFactory();
 	}
 
-	protected function registerFormatFactory() {
+	protected function registerFormatFactory()
+	{
 		$this->app->singleton('format', function ($app) {
 			$factory = new FormatFactory();//$app['translator'], $app
 
@@ -37,32 +39,36 @@ class FormatServiceProvider extends ServiceProvider implements DeferrableProvide
 		});
 	}
 
-	protected function registerFormats($factory) {
+	protected function registerFormats($factory)
+	{
 		$factory->registerFormats($this->formats);
 	}
 
-	protected function registerDefaultRules($factory) {
+	protected function registerDefaultRules($factory)
+	{
 		foreach ($this->defaultRules as $k => $v) {
 			$factory->extend($k, $v);
 		}
 	}
 
-	protected function registerRules($factory) {
+	protected function registerRules($factory)
+	{
 		foreach ($this->rules as $k => $v) {
 			$factory->extend($k, $v);
 		}
 	}
 
-	protected function registerAliases($factory) {
+	protected function registerAliases($factory)
+	{
 		$factory->alias('text', 'string');
 		//$factory->alias('float', 'number');
 		//$factory->alias('bool', 'boolean');
 	}
 
-	public function provides() {
+	public function provides()
+	{
 		return [
 			'format'
 		];
 	}
-
 }
